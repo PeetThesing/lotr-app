@@ -1,23 +1,34 @@
 import Link from "next/link";
+import { volumes } from "@/resources/lib/data";
+import { useRouter } from "next/router";
+
 export default function HomePage() {
+  function getRandomVolume(array) {
+    return array[Math.floor(Math.random() * array.length)];
+  }
+  const router = useRouter();
+
+  function handleClick() {
+    const randomSlug = getRandomVolume(volumes).slug;
+    router.push(`volumes/${randomSlug}`);
+    console.log("Random Volume Function", randomSlug);
+  }
+
   return (
-    <div>
+    <>
       <h1>All Volumes</h1>
       <ul>
-        <li>
-          <Link href="/volumes/the-fellowship-of-the-ring">
-            The Fellowship of the Ring
-          </Link>
-        </li>
-        <li>
-          <Link href="/volumes/the-two-towers">The two Towers</Link>
-        </li>
-        <li>
-          <Link href="/volumes/the-return-of-the-king">
-            The Return of the King
-          </Link>
-        </li>
+        {volumes.map(({ slug, title }) => {
+          return (
+            <li key={slug}>
+              <Link href={`/volumes/${slug}`}>{title}</Link>
+            </li>
+          );
+        })}
       </ul>
-    </div>
+      <button type="button" onClick={handleClick}>
+        Get random volume
+      </button>
+    </>
   );
 }
