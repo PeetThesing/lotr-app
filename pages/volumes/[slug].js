@@ -8,6 +8,9 @@ export default function VolumeDetail() {
   const router = useRouter();
   const { slug } = router.query;
 
+  const currentIndex = volumes.findIndex((volume) => volume.slug === slug);
+  const nextVolume = volumes[currentIndex + 1];
+  const previousVolume = volumes[currentIndex - 1];
   const currentVolume = volumes.find((volume) => volume.slug === slug);
   if (!currentVolume) {
     return null;
@@ -34,7 +37,12 @@ export default function VolumeDetail() {
         </li>
       </ul>
       <Image src={cover} alt={title} width={140} height={230} />
-      {/* <Link href={`/volumes/${slug}`}>Next Volume➡️</Link> */}
+      {previousVolume && (
+        <Link href={`/volumes/${previousVolume.slug}`}>Previous Volume</Link>
+      )}{" "}
+      {nextVolume && (
+        <Link href={`/volumes/${nextVolume.slug}`}>Next Volume</Link>
+      )}
     </div>
   );
 }
